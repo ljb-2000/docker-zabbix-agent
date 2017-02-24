@@ -14,8 +14,8 @@ RUN \
   apt-get install -y zabbix-agent zabbix-sender python3-pip python3-setuptools python3-wheel && \
   pip3 install -U pip setuptools py-zabbix prometheus_client simplejson requests wheel
 
-ADD ./zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf
-ADD ./zabbix-agent.sh /bin/zabbix-agent.sh
+COPY ./zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf
+COPY ./zabbix-agent.sh /bin/zabbix-agent.sh
 
 RUN mkdir /var/run/zabbix/ && \
   chown zabbix:zabbix /var/run/zabbix/

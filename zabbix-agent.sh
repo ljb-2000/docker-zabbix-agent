@@ -3,6 +3,7 @@
 ZABBIX_SERVER=${ZABBIX_SERVER}
 FQDN=${FQDN}
 ZABBIX_METADATA=${ZABBIX_METADATA}
+ZABBIX_TIMEOUT=${ZABBIX_TIMEOUT:-3}
 
 if [ -n "$ZABBIX_SERVER" ]; then
   sed -i -e "s/ServerActive={{- zabbix_server -}}/ServerActive=${ZABBIX_SERVER}/g" /etc/zabbix/zabbix_agentd.conf
@@ -23,6 +24,11 @@ if [ -n "$ZABBIX_METADATA" ]; then
 else
   echo "No ZABBIX_METADATA env set, using default ..."
   sed -i -e "s/HostMetadata={{- zabbix_metadata -}}/HostMetadata=None/g" /etc/zabbix/zabbix_agentd.conf
+fi
+
+if [ -n "$ZABBIX_TIMEOUT" ]; then
+  echo "Setting timeout to ${ZABBIX_TIMEOUT}"
+  sed -i -e "s/Timeout={{- timeout -}}/Timeout=${ZABBIX_TIMEOUT}/g" /etc/zabbix/zabbix_agentd.conf
 fi
 
 zabbix_agentd -f
